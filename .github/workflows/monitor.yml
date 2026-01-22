@@ -1,8 +1,8 @@
-name: FB Group RSS Monitor
+name: FB Group Monitor
 
 on:
   schedule:
-    - cron: '*/20 * * * *'  # Кожні 20 хв (економія квот)
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -10,19 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.12'
-
-    - name: Install dependencies
-      run: |
-        pip install feedparser requests supabase python-dotenv
-
-    - name: Run RSS monitor
+    
+    - name: Install deps
+      run: pip install requests beautifulsoup4 supabase python-dotenv
+    
+    - name: Run monitor
       env:
-        RSS_URL: ${{ secrets.RSS_URL }}
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
